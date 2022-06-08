@@ -1,0 +1,135 @@
+//colors
+//#333232
+//#474646
+//#F2F1F2
+//#F04129
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Tai+Heritage+Pro&display=swap");
+
+body {
+  margin: 0;
+  background-color: #333232;
+  color: #f2f1f2;
+  font-family: "Poppins", sans-serif;
+
+  a {
+    color: #f04129;
+    text-decoration: none;
+    font-weight: 100;
+  }
+
+  a:hover {
+    text-decoration: underline 2px solid #f04129;
+  }
+
+  header {
+    padding: 1rem 4rem;
+    font-size: 2rem;
+
+    .burger {
+      cursor: pointer;
+    }
+
+    #mySidenav {
+      width: 250px;
+    }
+    .sidenav {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      z-index: 100;
+      top: 0;
+      left: 0;
+      background-color: #111;
+      overflow-x: hidden;
+      transition: 0.5s;
+      padding-top: 60px;
+    }
+
+    .sidenav a {
+      padding: 8px 8px 8px 32px;
+      text-decoration: none;
+      font-size: 25px;
+      color: #818181;
+      display: block;
+      transition: 0.3s;
+    }
+
+    .sidenav a:hover {
+      color: #f1f1f1;
+    }
+
+    .sidenav .closebtn {
+      position: absolute;
+      top: 0;
+      right: 25px;
+      font-size: 36px;
+      margin-left: 50px;
+    }
+    .closebtn {
+      cursor: pointer;
+    }
+
+    @media screen and (max-height: 450px) {
+      .sidenav {
+        padding-top: 15px;
+      }
+      .sidenav a {
+        font-size: 18px;
+      }
+    }
+  }
+
+  main {
+    padding: 0 4rem;
+    margin: auto;
+    text-align: center;
+
+    h2 {
+      padding-bottom: 2rem;
+    }
+
+    .form-login {
+      background-color: #474646;
+      max-width: 300px;
+      margin: auto;
+      padding: 1rem;
+      border-radius: 20px;
+      display: flex;
+      flex-direction: column;
+
+      input {
+        padding: 0.3rem;
+        margin: 0.3rem auto;
+        border-radius: 10px;
+        width: fit-content;
+      }
+    }
+
+    .editor-container {
+      // margin: auto;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 2rem;
+
+      .editor-wrap {
+        margin: 1rem;
+      }
+    }
+  }
+  button {
+    margin: 1rem auto;
+    padding: 0.5rem;
+    width: 100px;
+    border-radius: 20px;
+    background-color: #f2f1f2;
+    color: #f04129;
+    cursor: pointer;
+  }
+  button:hover {
+    background-color: #333232;
+    color: #f04129;
+  }
+}

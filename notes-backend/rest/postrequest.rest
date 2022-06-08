@@ -1,0 +1,45 @@
+GET http://localhost:3000/posts
+
+###
+
+GET http://localhost:3000/posts/user/1
+
+
+###
+
+GET http://localhost:3000/posts/user/post/6
+
+
+###
+
+POST http://localhost:3000/posts/add
+Content-Type: application/json
+
+{
+    "user": 1,
+    "title": "titel",
+    "content": "<p>hej <strong>hopp</strong></p>"
+}
+
+###
+
+PUT http://localhost:3000/posts/update
+Content-Type: application/json
+
+{
+    "user": 1,
+    "postID": 5,
+    "content": "lorem ipsum"
+}
+
+###
+
+DELETE http://localhost:3000/posts/delete/25
+Content-Type: application/json
+
+{
+    "user": 1,
+    "postID": 25
+}
+
+###
