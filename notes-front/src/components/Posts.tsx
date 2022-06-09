@@ -22,6 +22,10 @@ export const Posts = () => {
       }
       let posts = await response.json();
 
+      const blob = new Blob(posts, { type: "text/html" });
+      console.log(blob);
+
+      // setPosts([...posts, blob]);
       setPosts(posts);
     } catch (error) {
       console.error(error);

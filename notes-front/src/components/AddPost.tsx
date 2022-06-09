@@ -37,7 +37,7 @@ export const AddPost = () => {
 
         const response = await fetch(url + `/posts/add`, {
           method: "POST",
-          body: JSON.stringify(obj),
+          body: blob,
           headers: { "Content-Type": "application/json" },
         });
         if (!response.ok) {
@@ -81,11 +81,30 @@ export const AddPost = () => {
           init={{
             height: 500,
             menubar: false,
-            plugins: ["image", "code", "table", "link", "media", "codesample"],
+            plugins: [
+              "advlist",
+              "autolink",
+              "lists",
+              "link",
+              "image",
+              "charmap",
+              "preview",
+              "anchor",
+              "searchreplace",
+              "visualblocks",
+              "code",
+              "fullscreen",
+              "insertdatetime",
+              "media",
+              "table",
+              "code",
+              "help",
+              "wordcount",
+            ],
             toolbar:
-              "undo redo | formatselect | fontselect | fontsizeselect | " +
-              "bold italic backcolor | alignleft aligncenter " +
-              "alignright alignjustify | bullist numlist | " +
+              "undo redo | blocks | " +
+              "bold italic forecolor | alignleft aligncenter " +
+              "alignright alignjustify | bullist numlist outdent indent | " +
               "removeformat | help",
             content_style:
               "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",

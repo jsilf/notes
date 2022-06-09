@@ -1,38 +1,34 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
-
-interface IUserData {
-  username: string;
-  password: string;
-}
+import { Link, useNavigate } from "react-router-dom";
+import { IUser } from "../models/IUser";
+import { LoggedIn } from "./LoggedIn";
 
 export const Login = () => {
-  // const [msg, setMsg] = useState("Logga in här");
+  const [msg, setMsg] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(Boolean);
-  // const [ID, setID] = useState();
+
   const {
     register,
     handleSubmit,
-    formState: { errors },
-  } = useForm<IUserData>();
+    // setError,
+    // formState: { errors },
+  } = useForm<IUser>();
+  let navigate = useNavigate();
+
+  // setError("username", { type: "custom", message: "custom message" });
 
   let storageID = sessionStorage.getItem("userID");
-  sessionStorage.setItem("isLoggedIn", JSON.stringify(isLoggedIn));
+
+  sessionStorage.getItem("isLoggedIn");
+
+  console.log(storageID);
 
   useEffect(() => {
     setIsLoggedIn(false);
   }, []);
 
-  const onSubmit = (user: IUserData) => {
-    let authUser: IUserData = {
-      username: user.username,
-      password: user.password,
-    };
-    checkLogin(authUser);
-  };
-
-  const checkLogin = async (user: IUserData) => {
+  const checkLogin = async (user: IUser) => {
     try {
       const response = await fetch("http://localhost:3000/users/login", {
         method: "POST",
@@ -43,39 +39,34 @@ export const Login = () => {
         throw new Error(`HTTP error: status is ${response.status}`);
       }
       let userID = await response.json();
-      // setID(userID);
 
-      sessionStorage.setItem("userID", userID);
-
-      setIsLoggedIn(true);
-      sessionStorage.getItem("isLoggedIn");
+      if (userID) {
+        sessionStorage.setItem("userID", JSON.stringify(userID));
+        sessionStorage.setItem("isLoggedIn", JSON.stringify(isLoggedIn));
+        setIsLoggedIn(true);
+        navigate(`/loggedin/${userID}`, { replace: true });
+      } else if (!userID) {
+        setMsg("Fel användarnamn eller lösen, försök igen");
+      }
     } catch (error) {
       console.error(error);
     }
   };
 
-  const handleLogoutClick = () => {
-    setIsLoggedIn(false);
-    console.log("Utloggad");
-    sessionStorage.clear();
+  const onSubmit = (user: IUser) => {
+    let authUser: IUser = {
+      username: user.username,
+      password: user.password,
+    };
+    checkLogin(authUser);
   };
 
   return (
     <>
-      <div>
-        {isLoggedIn ? (
-          <>
-            <Link to="/">
-              <button onClick={handleLogoutClick}>Logga ut </button>
-            </Link>
-            <div>
-              <p>Du är nu inloggad</p>
-            </div>
-            <h4>
-              <Link to={`/posts/${storageID}`}>Mina dokument</Link>
-            </h4>
-          </>
-        ) : (
+      {isLoggedIn ? (
+        <LoggedIn />
+      ) : (
+        <div>
           <form
             className="form-login"
             action="post"
@@ -88,6 +79,7 @@ export const Login = () => {
               type="text"
               name="username"
             />
+            {/* {errors.username && <p>{errors.username.message}</p>} */}
             <label htmlFor="password">Lösenord</label>
             <input
               {...register("password", { required: true })}
@@ -96,9 +88,9 @@ export const Login = () => {
             />
             <button type="submit">Logga in</button>
           </form>
-        )}
-      </div>
-      {/* <ErrorMessage errors={errors} /> */}
+          {msg}
+        </div>
+      )}
     </>
   );
 };

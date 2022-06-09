@@ -5,23 +5,29 @@ import "../styling/style.scss";
 
 export const Layout = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [id, setId] = useState<any>();
+  // const [id, setId] = useState<any>();
+  const [isloggedin, setIsloggedin] = useState(false);
   let storageID = sessionStorage.getItem("userID");
   let savedlog = sessionStorage.getItem("isLoggedIn");
+  let bool = false;
 
-  let isloggedin = true;
-
-  if (savedlog === "true" && id === null) {
-    isloggedin = false;
+  if (savedlog === "true") {
+    bool = true;
   }
 
   useEffect(() => {
-    setId(storageID);
-  }, [storageID]);
+    setIsloggedin(isloggedin);
+  }, [isloggedin]);
+
+  useEffect(() => {
+    setIsloggedin(bool);
+  }, [bool]);
 
   function openNav() {
     setIsOpen(!isOpen);
   }
+
+  console.log(isloggedin);
 
   return (
     <>
@@ -35,13 +41,15 @@ export const Layout = () => {
               <div className="closebtn" onClick={openNav}>
                 &times;
               </div>
-              {isloggedin ? (
-                <Link to={`/posts/${id}`}>Mina dokument</Link>
+              {!isloggedin ? (
+                <Link to={`/`}>Logga in för att se menyn</Link>
               ) : (
-                <Link to={"/"}>Mina dokument</Link>
+                <>
+                  <Link to={`/posts/${storageID}`}>Mina dokument</Link>
+                  <Link to={"/"}>Alla användare</Link>
+                  <Link to={"/"}>Alla dokument</Link>
+                </>
               )}
-              <Link to={"/"}>Alla användare</Link>
-              <Link to={"/"}>Alla dokument</Link>
             </div>
           </>
         )}

@@ -4,20 +4,10 @@ const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const cors = require("cors");
 
-const mysql = require("mysql2");
-
 const postsRouter = require("./routes/posts");
 const usersRouter = require("./routes/users");
 
 const app = express();
-
-app.locals.con = mysql.createConnection({
-  host: "localhost",
-  port: "3306",
-  user: "notes",
-  password: "3$ADBt]#8@$3PtG",
-  database: "notes",
-});
 
 app.use(cors());
 app.use(logger("dev"));

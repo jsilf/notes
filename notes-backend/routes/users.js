@@ -1,76 +1,79 @@
 const express = require("express");
 const router = express.Router();
-const mysql = require("mysql2");
+// const mysql = require("mysql2");
+main();
 
-/* GET users listing. */
-router.get("/", function (req, res) {
-  req.app.locals.con.connect(function (err) {
-    if (err) console.log(err);
-    let sql = `SELECT * from users`;
-
-    req.app.locals.con.query(sql, function (err, result) {
-      if (err) console.log(err);
-      console.log("result", result);
-      res.json(result);
-    });
+async function main() {
+  // get the client
+  const mysql = require("mysql2/promise");
+  // create the connection
+  const connection = await mysql.createConnection({
+    host: "localhost",
+    port: "3306",
+    user: "notes",
+    password: "3$ADBt]#8@$3PtG",
+    database: "notes",
   });
-});
 
-/* POST auth login */
+  /* GET users listing. */
+  router.get("/", async function (req, res) {
+    try {
+      const [rows] = await connection.execute(`SELECT * from users`);
 
-router.post("/login", function (req, res) {
-  // //avkryptera lösen
-  // let encrypted = CryptoJS.SHA256(req.body.passWord, "Saltnyckel").toString();
+      console.log("result", rows);
+      res.json(rows);
+    } catch (error) {
+      console.log(error);
+    }
+  });
 
-  req.app.locals.con.connect(function (err) {
-    if (err) console.log(err);
+  /* POST auth login */
+  router.post("/login", async function (req, res) {
+    // //avkryptera lösen
+    // let encrypted = CryptoJS.SHA256(req.body.passWord, "Saltnyckel").toString();
 
-    let sql = `SELECT * from users`;
+    try {
+      // query database
+      const [rows] = await connection.execute(`SELECT * from users`);
 
-    req.app.locals.con.query(sql, function (err, result) {
-      if (err) console.log(err);
-
-      let foundUser = result.find((user) => {
+      let foundUser = rows.find((user) => {
         return (
           user.username === req.body.username &&
           user.password === req.body.password
         );
       });
 
-      console.log(foundUser);
-
       if (foundUser) {
-        console.log("result", result);
-        return res.json(foundUser.userID);
+        console.log("result", rows);
+        return res.status(200).json(foundUser.userID);
       } else {
-        res.send("Fel användarnamn eller lösen");
+        res.status(401).send("Fel användarnamn eller lösen");
       }
-    });
-  });
-});
-
-/* POST add new user */
-router.post("/add", function (req, res) {
-  req.app.locals.con.connect(function (err) {
-    if (err) {
-      console.log(err);
+    } catch (error) {
+      console.log(error);
     }
-
-    // //kryptera lösen
-    // let encrypted = CryptoJS.SHA256(req.body.passWord, "Saltnyckel").toString();
-
-    let sql = `INSERT INTO users (userId, userName, passWord) VALUES 
-    ("${req.body.username}", "${req.body.password}")`;
-
-    req.app.locals.con.query(sql, function (err, result) {
-      if (err) {
-        console.log(err);
-      }
-      console.log("result", result);
-
-      res.json(result);
-    });
   });
-});
+
+  /* POST add new user */
+  router.post("/add", async function (req, res) {
+    try {
+      // const saveUserName = mysql.escape(req.body.username);
+      // const saveUserPassword = mysql.escape(req.body.password);
+
+      //kryptera lösen
+      // let encrypted = CryptoJS.SHA256(req.body.passWord, "Saltnyckel").toString();
+
+      const [rows] =
+        await connection.execute(`INSERT INTO users (userName, passWord) VALUES 
+      ('${req.body.username}', '${req.body.password}')`);
+
+      console.log("result", rows);
+
+      res.json(rows);
+    } catch (error) {
+      console.log(error);
+    }
+  });
+}
 
 module.exports = router;

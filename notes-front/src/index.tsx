@@ -7,9 +7,9 @@ import { Layout } from "./components/Layout";
 import { Home } from "./components/Home";
 import { NotFound } from "./components/NotFound";
 import { Posts } from "./components/Posts";
-import { Login } from "./components/Login";
 import { EditPost } from "./components/EditPost";
 import { AddPost } from "./components/AddPost";
+import { LoggedIn } from "./components/LoggedIn";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -20,7 +20,7 @@ root.render(
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/loggedin/:id" element={<LoggedIn />} />
           <Route path="/posts/:id" element={<Posts />} />
           <Route path="/posts/edit/:id" element={<EditPost />} />
           <Route path="/posts/add/:id" element={<AddPost />} />
