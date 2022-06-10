@@ -3,7 +3,11 @@ import { Link } from "react-router-dom";
 export const NotFound = () => {
   return (
     <>
-      404 Page not found, return to <Link to={"/"}>Home</Link>
+      <h2>
+        {" "}
+        Oops, något gick fel. Klicka <Link to={"/"}>här </Link>
+        för att komma tillbaka till startsidan 🤓
+      </h2>
     </>
   );
 };

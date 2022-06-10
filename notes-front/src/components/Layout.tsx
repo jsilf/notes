@@ -1,23 +1,19 @@
 import { useEffect, useState } from "react";
 import { Link, Outlet } from "react-router-dom";
 import "../styling/style.scss";
+import { LoggedIn } from "./LoggedIn";
 // import { storageID } from "./Login";
 
 export const Layout = () => {
   const [isOpen, setIsOpen] = useState(false);
-  // const [id, setId] = useState<any>();
   const [isloggedin, setIsloggedin] = useState(false);
   let storageID = sessionStorage.getItem("userID");
-  let savedlog = sessionStorage.getItem("isLoggedIn");
+  // let savedlog = sessionStorage.getItem("isLoggedIn");
   let bool = false;
 
-  if (savedlog === "true") {
+  if (storageID) {
     bool = true;
   }
-
-  useEffect(() => {
-    setIsloggedin(isloggedin);
-  }, [isloggedin]);
 
   useEffect(() => {
     setIsloggedin(bool);
@@ -27,27 +23,23 @@ export const Layout = () => {
     setIsOpen(!isOpen);
   }
 
-  console.log(isloggedin);
-
   return (
     <>
       <header>
-        <span onClick={openNav} className="burger">
-          Meny
-        </span>
+        <h1 onClick={openNav}>Meny</h1>
         {isOpen && (
           <>
             <div id="mySidenav" className="sidenav">
               <div className="closebtn" onClick={openNav}>
                 &times;
               </div>
-              {!isloggedin ? (
-                <Link to={`/`}>Logga in för att se menyn</Link>
+              {isloggedin ? (
+                <>
+                  <LoggedIn />
+                </>
               ) : (
                 <>
-                  <Link to={`/posts/${storageID}`}>Mina dokument</Link>
-                  <Link to={"/"}>Alla användare</Link>
-                  <Link to={"/"}>Alla dokument</Link>
+                  <Link to={`/`}>Logga in för att se menyn</Link>
                 </>
               )}
             </div>

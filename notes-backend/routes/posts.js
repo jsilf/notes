@@ -15,12 +15,17 @@ async function main() {
     database: "notes",
   });
 
+  //escape sql strings
+  // const saveUserName = mysql.escape(req.body.username);
+  // const saveUserPassword = mysql.escape(req.body.password);
+
   /* GET document posts */
   router.get("/", async function (req, res, next) {
     try {
       const [rows] = await connection.execute(`SELECT * FROM posts`);
 
       console.log("result", rows);
+
       res.json(rows);
     } catch (error) {
       console.log(error);
@@ -31,6 +36,7 @@ async function main() {
   router.get("/user/:id", async function (req, res) {
     try {
       const [rows] = await connection.execute(
+        // `SELECT content FROM posts WHERE user='${req.params.id}'`
         `SELECT * FROM posts WHERE user='${req.params.id}'`
       );
 

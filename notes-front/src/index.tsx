@@ -10,6 +10,8 @@ import { Posts } from "./components/Posts";
 import { EditPost } from "./components/EditPost";
 import { AddPost } from "./components/AddPost";
 import { LoggedIn } from "./components/LoggedIn";
+import { Post } from "./components/Post";
+import { PostsList } from "./components/PostsList";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -22,6 +24,8 @@ root.render(
           <Route index element={<Home />} />
           <Route path="/loggedin/:id" element={<LoggedIn />} />
           <Route path="/posts/:id" element={<Posts />} />
+          <Route path="/posts/post/:id" element={<Post />} />
+          <Route path="/posts/list/:id" element={<PostsList />} />
           <Route path="/posts/edit/:id" element={<EditPost />} />
           <Route path="/posts/add/:id" element={<AddPost />} />
           <Route path="*" element={<NotFound />} />

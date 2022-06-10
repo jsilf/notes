@@ -1,8 +1,5 @@
 import { Editor } from "@tinymce/tinymce-react";
-import { ChangeEvent, useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
-import { IPost } from "../models/IPost";
-// import { storageID } from "./Login";
+import { ChangeEvent, useRef, useState } from "react";
 import { url } from "./Posts";
 
 export const AddPost = () => {
@@ -10,18 +7,7 @@ export const AddPost = () => {
   const [title, setTitle] = useState("");
   const [msg, setMsg] = useState("");
 
-  // const [storedId, setStoredId] = useState("");
   let storageID = sessionStorage.getItem("userID");
-
-  // useEffect(() => {
-  //   setStoredId(storageID);
-  // }, []);
-
-  // console.log(storedId);
-
-  // useEffect(() => {
-  //   saveNewPost();
-  // }, []);
 
   const saveNewPost = async () => {
     try {
@@ -29,11 +15,10 @@ export const AddPost = () => {
         const content = editorRef.current.getContent();
 
         //blob
-        const obj = { user: storageID, title: title, content: content };
-        const blob = new Blob([JSON.stringify(obj, null, 3)], {
-          type: "application/json",
+        const newPost = { user: storageID, title: title, content: content };
+        const blob = new Blob([JSON.stringify(newPost, null, 3)], {
+          type: "text/html",
         });
-        console.log(blob);
 
         const response = await fetch(url + `/posts/add`, {
           method: "POST",
@@ -44,16 +29,12 @@ export const AddPost = () => {
           throw new Error(`HTTP error: status is ${response.status}`);
         }
         let data = await response.json();
-        console.log(data);
+        // console.log(data);
         setMsg(data);
       }
     } catch (error) {
       console.error(error);
     }
-  };
-
-  const handleLogoutClick = () => {
-    sessionStorage.clear();
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -62,16 +43,16 @@ export const AddPost = () => {
 
   return (
     <>
-      <button onClick={handleLogoutClick}>
-        <Link to="/">Logga ut</Link>
-      </button>
-
-      <Link to={`/posts/${storageID}`}>Mina dokument</Link>
-
-      <div>
+      <div className="editor-add-wrap">
         <h5>{msg}</h5>
-
-        <input type="text" name="title" value={title} onChange={handleChange} />
+        <label htmlFor="title">Skriv din rubrik här</label>
+        <input
+          className="input-title-add"
+          type="text"
+          name="title"
+          value={title}
+          onChange={handleChange}
+        />
 
         <Editor
           apiKey="8ptuvhro7r1cnldvl0ib0hklp6ruhyx5mgg6a82z8f49d6p8"

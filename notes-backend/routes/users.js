@@ -29,11 +29,10 @@ async function main() {
 
   /* POST auth login */
   router.post("/login", async function (req, res) {
-    // //avkryptera lösen
-    // let encrypted = CryptoJS.SHA256(req.body.passWord, "Saltnyckel").toString();
-
     try {
-      // query database
+      //avkryptera lösen
+      // let encrypted = CryptoJS.SHA256(req.body.passWord, "Saltnyckel").toString();
+
       const [rows] = await connection.execute(`SELECT * from users`);
 
       let foundUser = rows.find((user) => {
@@ -47,7 +46,7 @@ async function main() {
         console.log("result", rows);
         return res.status(200).json(foundUser.userID);
       } else {
-        res.status(401).send("Fel användarnamn eller lösen");
+        res.status(401).json("Fel användarnamn eller lösen");
       }
     } catch (error) {
       console.log(error);
@@ -57,15 +56,15 @@ async function main() {
   /* POST add new user */
   router.post("/add", async function (req, res) {
     try {
-      // const saveUserName = mysql.escape(req.body.username);
-      // const saveUserPassword = mysql.escape(req.body.password);
-
-      //kryptera lösen
+      // kryptera lösen
       // let encrypted = CryptoJS.SHA256(req.body.passWord, "Saltnyckel").toString();
+
+      const saveUserName = mysql.escape(req.body.username);
+      const saveUserPassword = mysql.escape(req.body.password);
 
       const [rows] =
         await connection.execute(`INSERT INTO users (userName, passWord) VALUES 
-      ('${req.body.username}', '${req.body.password}')`);
+      (${saveUserName}, ${saveUserPassword})`);
 
       console.log("result", rows);
 

@@ -4,14 +4,14 @@ import { Editor } from "@tinymce/tinymce-react";
 import { Link, useParams } from "react-router-dom";
 import { IPost } from "../models/IPost";
 import { url } from "./Posts";
+import { LoggedIn } from "./LoggedIn";
 
 export const EditPost = () => {
   const [posts, setPosts] = useState<IPost[]>([]);
+  const [msg, setMsg] = useState("");
+  const [title, setTitle] = useState("");
   const editorRef = useRef<any>(null);
   const { id } = useParams();
-  const [msg, setMsg] = useState("");
-
-  const [title, setTitle] = useState("");
 
   let storageID = sessionStorage.getItem("userID");
 
@@ -85,15 +85,18 @@ export const EditPost = () => {
     }
   };
 
-  const handleLogoutClick = () => {
-    sessionStorage.clear();
-  };
-
   let printHTML = posts.map((post: IPost, i: number) => {
     return (
-      <div key={i}>
-        <h4>{post.title}</h4>
-        <input type="text" name="title" value={title} onChange={handleChange} />
+      <div className="editor-edit-wrap" key={i}>
+        <h4>Titel på dokumentet: {post.title}</h4>
+        <label htmlFor="title">Ändra rubrik här</label>
+        <input
+          className="input-title-edit"
+          type="text"
+          name="title"
+          value={title}
+          onChange={handleChange}
+        />
         <Editor
           apiKey="8ptuvhro7r1cnldvl0ib0hklp6ruhyx5mgg6a82z8f49d6p8"
           textareaName="Body"
@@ -137,11 +140,6 @@ export const EditPost = () => {
 
   return (
     <>
-      <Link to="/">
-        <button onClick={handleLogoutClick}>Logga ut </button>
-      </Link>
-
-      <Link to={`/posts/${storageID}`}>Mina dokument</Link>
       <div>{msg}</div>
 
       <div>{printHTML}</div>
