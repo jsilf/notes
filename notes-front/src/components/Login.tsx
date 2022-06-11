@@ -17,7 +17,6 @@ export const Login = () => {
 
   // setError("username", { type: "custom", message: "custom message" });
 
-  // let storageID = sessionStorage.getItem("userID");
   sessionStorage.getItem("isLoggedIn");
 
   useEffect(() => {

@@ -8,8 +8,6 @@ export const Post = () => {
   const [post, setPost] = useState<IPost[]>([]);
   const { id } = useParams();
 
-  //   let userid = sessionStorage.getItem("userID");
-
   useEffect(() => {
     getPost();
   }, []);

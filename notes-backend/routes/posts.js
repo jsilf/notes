@@ -15,10 +15,6 @@ async function main() {
     database: "notes",
   });
 
-  //escape sql strings
-  // const saveUserName = mysql.escape(req.body.username);
-  // const saveUserPassword = mysql.escape(req.body.password);
-
   /* GET document posts */
   router.get("/", async function (req, res, next) {
     try {
@@ -35,9 +31,10 @@ async function main() {
   /* GET documents from specific user */
   router.get("/user/:id", async function (req, res) {
     try {
+      const paramID = mysql.escape(req.params.id);
+
       const [rows] = await connection.execute(
-        // `SELECT content FROM posts WHERE user='${req.params.id}'`
-        `SELECT * FROM posts WHERE user='${req.params.id}'`
+        `SELECT * FROM posts WHERE user=${paramID}`
       );
 
       console.log("result", rows);
@@ -50,8 +47,9 @@ async function main() {
   /* GET specific post from specific user */
   router.get("/user/post/:id", async function (req, res) {
     try {
+      const paramID = mysql.escape(req.params.id);
       const [rows] = await connection.execute(
-        `SELECT content, title, postID FROM posts WHERE postID='${req.params.id}'`
+        `SELECT content, title, postID FROM posts WHERE postID=${paramID}`
       );
 
       console.log("result", rows);
@@ -79,8 +77,9 @@ async function main() {
   /* UPDATE posts */
   router.put("/update/:id", async function (req, res) {
     try {
+      const paramID = mysql.escape(req.params.id);
       const [rows] = await connection.execute(
-        `UPDATE posts SET title='${req.body.title}', content='${req.body.content}' WHERE user='${req.body.user}' AND postID='${req.params.id}'`
+        `UPDATE posts SET title='${req.body.title}', content='${req.body.content}' WHERE user='${req.body.user}' AND postID=${paramID}`
       );
 
       console.log("result", rows);
@@ -93,8 +92,9 @@ async function main() {
   /* DELETE posts */
   router.delete("/delete/:id", async function (req, res, next) {
     try {
+      const paramID = mysql.escape(req.params.id);
       const [rows] = await connection.execute(
-        `DELETE FROM posts WHERE postID='${req.params.id}' AND user='${req.body.user}'`
+        `DELETE FROM posts WHERE postID=${paramID} AND user='${req.body.user}'`
       );
 
       console.log("result", rows);

@@ -2,8 +2,6 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 export const LoggedIn = () => {
-  // sessionStorage.getItem("isLoggedIn");
-
   const [isLoggedIn, setIsLoggedIn] = useState(true);
 
   let storageID = sessionStorage.getItem("userID");

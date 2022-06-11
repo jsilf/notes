@@ -2,13 +2,11 @@ import { useEffect, useState } from "react";
 import { Link, Outlet } from "react-router-dom";
 import "../styling/style.scss";
 import { LoggedIn } from "./LoggedIn";
-// import { storageID } from "./Login";
 
 export const Layout = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isloggedin, setIsloggedin] = useState(false);
   let storageID = sessionStorage.getItem("userID");
-  // let savedlog = sessionStorage.getItem("isLoggedIn");
   let bool = false;
 
   if (storageID) {
