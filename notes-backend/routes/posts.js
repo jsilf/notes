@@ -49,7 +49,7 @@ async function main() {
     try {
       const paramID = mysql.escape(req.params.id);
       const [rows] = await connection.execute(
-        `SELECT content, title, postID FROM posts WHERE postID=${paramID}`
+        `SELECT * FROM posts WHERE postID=${paramID}`
       );
 
       console.log("result", rows);
@@ -62,13 +62,17 @@ async function main() {
   /* POST new document posts */
   router.post("/add", async function (req, res) {
     try {
-      const [rows] = await connection.execute(
-        `INSERT INTO posts (user, title, content) VALUES 
+      if (req.body.title === "") {
+        res.json("Måste ange titel");
+      } else {
+        const [rows] = await connection.execute(
+          `INSERT INTO posts (user, title, content) VALUES 
         ('${req.body.user}', '${req.body.title}', '${req.body.content}')`
-      );
+        );
 
-      console.log("result", rows);
-      res.status(200).json("Nytt dokument sparat");
+        console.log("result", rows);
+        res.status(200).json("Nytt dokument sparat");
+      }
     } catch (error) {
       console.log(error);
     }
@@ -78,12 +82,16 @@ async function main() {
   router.put("/update/:id", async function (req, res) {
     try {
       const paramID = mysql.escape(req.params.id);
-      const [rows] = await connection.execute(
-        `UPDATE posts SET title='${req.body.title}', content='${req.body.content}' WHERE user='${req.body.user}' AND postID=${paramID}`
-      );
+      if (req.body.title === "") {
+        res.json("Måste ange titel");
+      } else {
+        const [rows] = await connection.execute(
+          `UPDATE posts SET title='${req.body.title}', content='${req.body.content}' WHERE user='${req.body.user}' AND postID=${paramID}`
+        );
 
-      console.log("result", rows);
-      res.json("Dokument ändrat");
+        console.log("result", rows);
+        res.json("Dokument ändrat");
+      }
     } catch (error) {
       console.log(error);
     }

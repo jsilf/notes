@@ -1,10 +1,9 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { useRef } from "react";
 import { Editor } from "@tinymce/tinymce-react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { IPost } from "../models/IPost";
 import { url } from "./Posts";
-import { LoggedIn } from "./LoggedIn";
 
 export const EditPost = () => {
   const [posts, setPosts] = useState<IPost[]>([]);
@@ -39,14 +38,19 @@ export const EditPost = () => {
       if (editorRef.current) {
         const content = editorRef.current.getContent();
 
+        const newPost = {
+          user: storageID,
+          title: title,
+          content: content,
+          postID: id,
+        };
+        const blob = new Blob([JSON.stringify(newPost, null, 3)], {
+          type: "text/html",
+        });
+
         const response = await fetch(url + `/posts/update/${id}`, {
           method: "PUT",
-          body: JSON.stringify({
-            postID: id,
-            title: title,
-            content: content,
-            user: storageID,
-          }),
+          body: blob,
           headers: { "Content-Type": "application/json" },
         });
         if (!response.ok) {
@@ -58,6 +62,7 @@ export const EditPost = () => {
       }
     } catch (error) {
       console.error(error);
+      setMsg("Något blev fel");
     }
   };
 

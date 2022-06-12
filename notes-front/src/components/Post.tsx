@@ -46,7 +46,7 @@ export const Post = () => {
           disabled={true}
           initialValue={`${post.content}`}
           init={{
-            // height: 700,
+            height: 600,
             // width: 600,
             menubar: false,
             plugins: ["resize"],
